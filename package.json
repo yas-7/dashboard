@@ -4,8 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "test": "NODE_ENV=test npm run migrate && npx lab -l",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all",
+    "seed": "npx sequelize-cli db:seed:all",
+    "seed:reset": "npx sequelize-cli db:seed:undo:all",
+    "start": "npm run migrate && nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +19,8 @@
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
+    "@hapi/code": "^7.0.0",
+    "@hapi/lab": "^21.0.0",
     "nodemon": "^1.19.4",
     "sqlite3": "^4.1.0"
   }
