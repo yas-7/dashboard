@@ -3,8 +3,8 @@
 const Lab = require('@hapi/lab');
 const { expect } = require('@hapi/code');
 const { afterEach, beforeEach, describe, it } = exports.lab = Lab.script();
-const { init } = require('../server');
-const db = require('../models')
+const { init } = require('../src/server/server');
+const db = require('../src/server/db/models')
 
 const Author= db.Author;
 const Website= db.Website;
