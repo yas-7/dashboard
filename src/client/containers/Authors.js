@@ -5,20 +5,46 @@ import * as actions from '../actions';
 
 class Authors extends Component {
   componentDidMount() {
-    this.props.dispatch(actions.fetchAuthors());
+    this.props.fetchAuthors();
   }
   render() {
-    const { authors } = this.props;
+    const {
+      authors,
+      currentAuthor,
+      addAuthor,
+      deleteAuthor,
+      editAuthor,
+      editAuthorFields,
+      startEditAuthor
+    } = this.props;
+    
     return (
-      <AuthorsList authors={authors}/>
+      <AuthorsList
+        authors={authors}
+        currentAuthor={currentAuthor}
+        addAuthor={addAuthor}
+        deleteAuthor={deleteAuthor}
+        editAuthor={editAuthor}
+        editAuthorFields={editAuthorFields}
+        startEditAuthor={startEditAuthor}/>
     );
   }
 }
 
+const mapDispatchToProps = {
+  addAuthor: actions.addAuthor,
+  fetchAuthors: actions.fetchAuthors,
+  deleteAuthor: actions.deleteAuthor,
+  editAuthor: actions.editAuthor,
+  editAuthorFields: actions.editAuthorFields,
+  startEditAuthor: actions.startEditAuthor
+}
+
 function mapStateToProps(state) {
   return {
-    authors: state.authors
+    authors: state.authorsData.authors,
+    currentAuthor: state.authorsData.currentAuthor
   };
 }
 
-export default connect(mapStateToProps)(Authors);
+export default connect(mapStateToProps, mapDispatchToProps)(Authors);
