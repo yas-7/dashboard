@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const AUTHORS_REQUEST = 'AUTHORS_REQUEST'
 export const AUTHORS_FETCHED = 'AUTHORS_FETCHED'
 export const AUTHORS_FAIL = 'AUTHORS_FAIL'
@@ -18,58 +20,38 @@ export const AUTHOR_FIELDS_EDIT = 'AUTHOR_FIELDS_EDIT'
 
 
 export const fetchAuthors = () => dispatch => {
-  dispatch({
-    type: AUTHORS_REQUEST,
-  })
-  return fetch(`/api/authors`)
-    .then(
-      response => response.json(),
-      error => dispatch({ type: AUTHORS_FAIL, error })
-    )
-    .then(authors => dispatch({ type: AUTHORS_FETCHED, authors }))
-}
+  dispatch({ type: AUTHORS_REQUEST });
+  return axios
+    .get(`/api/authors`)
+    .then(authors => dispatch({ type: AUTHORS_FETCHED, authors: authors.data }))
+    .catch(error => dispatch({ type: AUTHORS_FAIL, error }));
+};
 
-export const addAuthor = (author) => dispatch => {
-  const data = { author: { name: author.name } }
-  dispatch({
-    type: AUTHOR_ADD_REQUEST,
-  })
-  return fetch(`/api/authors`, {
-    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)
-  })
-    .then(
-      response => response.json(),
-      error => dispatch({ type: AUTHOR_ADD_FAIL, error })
-    )
-    .then(author => dispatch({ type: AUTHOR_ADD_SUCCESS, author }))
-}
+export const addAuthor = author => dispatch => {
+  dispatch({ type: AUTHOR_ADD_REQUEST });
+  return axios
+    .post(`/api/authors`, { author })
+    .then(author => dispatch({ type: AUTHOR_ADD_SUCCESS, author: author.data }))
+    .catch(error => dispatch({ type: AUTHOR_ADD_FAIL, error }));
+};
 
-export const deleteAuthor = (id) => dispatch => {
-  dispatch({
-    type: AUTHOR_DELETE_REQUEST,
-  })
-  return fetch(`/api/authors/${id}`, { method: 'DELETE' })
-    .then(
-      response => response.json(),
-      error => dispatch({ type: AUTHOR_DELETE_FAIL, error })
-    )
+export const deleteAuthor = id => dispatch => {
+  dispatch({ type: AUTHOR_DELETE_REQUEST });
+  return axios
+    .delete(`/api/authors/${id}`)
     .then(() => dispatch({ type: AUTHOR_DELETE_SUCCESS, id }))
-}
+    .catch(error => dispatch({ type: AUTHOR_DELETE_FAIL, error }));
+};
 
-export const updateAuthor = (author) => dispatch => {
-  const data = { author: { name: author.name } }
-  dispatch({
-    type: AUTHOR_UPDATE_REQUEST,
-  })
-  return fetch(`/api/authors/${author.id}`, {
-    method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)
-  })
-    .then(
-      response => response.json(),
-      error => dispatch({ type: AUTHOR_UPDATE_FAIL, error })
+export const updateAuthor = author => dispatch => {
+  dispatch({ type: AUTHOR_UPDATE_REQUEST });
+  return axios
+    .put(`/api/authors/${author.id}`, { author })
+    .then(author =>
+      dispatch({ type: AUTHOR_UPDATE_SUCCESS, author: author.data })
     )
-    .then(author => dispatch({ type: AUTHOR_UPDATE_SUCCESS, author }))
-}
+    .catch(error => dispatch({ type: AUTHOR_UPDATE_FAIL, error }));
+};
 
 export const editAuthorFields = author => dispatch =>
-    dispatch({ type: AUTHOR_FIELDS_EDIT, payload: author })
+  dispatch({ type: AUTHOR_FIELDS_EDIT, payload: author });
