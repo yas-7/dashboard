@@ -4,20 +4,26 @@ const AuthorsList = (props) => {
   const {
     currentAuthor,
     authors,
-    editAuthor,
+    updateAuthor,
     addAuthor,
     deleteAuthor,
-    startEditAuthor,
     editAuthorFields
   } = props;
   
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currentAuthor.isEditing) {
-      editAuthor(currentAuthor);
+      updateAuthor(currentAuthor);
     } else {
       addAuthor(currentAuthor)
     }
+  }
+
+  const editFields =  e => {
+    const target = e.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name;
+    editAuthorFields({ [name]: value })
   }
 
   const { error, loading } = authors;
@@ -35,7 +41,7 @@ const AuthorsList = (props) => {
           {Object.values(authors).map(author => <li key={author.id}>
             {author.name}
             <button onClick={() => deleteAuthor(author.id)}>DELETE</button>
-            <button onClick={() => startEditAuthor(author)}>EDIT</button>
+            <button onClick={() => editAuthorFields({...author, isEditing: true})}>EDIT</button>
           </li>)}
         </ul>
 
@@ -46,7 +52,7 @@ const AuthorsList = (props) => {
             name="name"
             placeholder="Author name"
             value={currentAuthor.name}
-            onChange={editAuthorFields}
+            onChange={editFields}
           />
           <input type="submit" value="Save" />
         </form>

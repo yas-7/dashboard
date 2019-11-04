@@ -13,9 +13,8 @@ class Authors extends Component {
       currentAuthor,
       addAuthor,
       deleteAuthor,
-      editAuthor,
+      updateAuthor,
       editAuthorFields,
-      startEditAuthor
     } = this.props;
     
     return (
@@ -24,9 +23,8 @@ class Authors extends Component {
         currentAuthor={currentAuthor}
         addAuthor={addAuthor}
         deleteAuthor={deleteAuthor}
-        editAuthor={editAuthor}
-        editAuthorFields={editAuthorFields}
-        startEditAuthor={startEditAuthor}/>
+        updateAuthor={updateAuthor}
+        editAuthorFields={editAuthorFields}/>
     );
   }
 }
@@ -35,9 +33,8 @@ const mapDispatchToProps = {
   addAuthor: actions.addAuthor,
   fetchAuthors: actions.fetchAuthors,
   deleteAuthor: actions.deleteAuthor,
-  editAuthor: actions.editAuthor,
+  updateAuthor: actions.updateAuthor,
   editAuthorFields: actions.editAuthorFields,
-  startEditAuthor: actions.startEditAuthor
 }
 
 function mapStateToProps(state) {

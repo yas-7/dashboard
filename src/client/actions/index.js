@@ -10,12 +10,11 @@ export const AUTHOR_DELETE_REQUEST = 'AUTHOR_DELETE_REQUEST'
 export const AUTHOR_DELETE_FAIL = 'AUTHOR_DELETE_FAIL'
 export const AUTHOR_DELETE_SUCCESS = 'AUTHOR_DELETE_SUCCESS'
 
-export const AUTHOR_EDIT_REQUEST = 'AUTHOR_EDIT_REQUEST'
-export const AUTHOR_EDIT_FAIL = 'AUTHOR_EDIT_FAIL'
-export const AUTHOR_EDIT_SUCCESS = 'AUTHOR_EDIT_SUCCESS'
+export const AUTHOR_UPDATE_REQUEST = 'AUTHOR_UPDATE_REQUEST'
+export const AUTHOR_UPDATE_FAIL = 'AUTHOR_UPDATE_FAIL'
+export const AUTHOR_UPDATE_SUCCESS = 'AUTHOR_UPDATE_SUCCESS'
 
 export const AUTHOR_FIELDS_EDIT = 'AUTHOR_FIELDS_EDIT'
-export const AUTHOR_FIELDS_START_EDIT = 'AUTHOR_FIELDS_START_EDIT'
 
 
 export const fetchAuthors = () => dispatch => {
@@ -57,27 +56,20 @@ export const deleteAuthor = (id) => dispatch => {
     .then(() => dispatch({ type: AUTHOR_DELETE_SUCCESS, id }))
 }
 
-export const editAuthor = (author) => dispatch => {
+export const updateAuthor = (author) => dispatch => {
   const data = { author: { name: author.name } }
   dispatch({
-    type: AUTHOR_EDIT_REQUEST,
+    type: AUTHOR_UPDATE_REQUEST,
   })
   return fetch(`/api/authors/${author.id}`, {
     method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)
   })
     .then(
       response => response.json(),
-      error => dispatch({ type: AUTHOR_EDIT_FAIL, error })
+      error => dispatch({ type: AUTHOR_UPDATE_FAIL, error })
     )
-    .then(author => dispatch({ type: AUTHOR_EDIT_SUCCESS, author }))
+    .then(author => dispatch({ type: AUTHOR_UPDATE_SUCCESS, author }))
 }
 
-export const editAuthorFields = e => dispatch => {
-  const target = e.target
-  const value = target.type === 'checkbox' ? target.checked : target.value
-  const name = target.name
-  dispatch({ type: AUTHOR_FIELDS_EDIT, data: { [name]: value } })
-}
-
-export const startEditAuthor = author => dispatch =>
-    dispatch({ type: AUTHOR_FIELDS_START_EDIT, author })
+export const editAuthorFields = author => dispatch =>
+    dispatch({ type: AUTHOR_FIELDS_EDIT, payload: author })

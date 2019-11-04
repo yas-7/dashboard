@@ -34,7 +34,8 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         loading: false,
         error: null,
-        authors: {...state.authors, [action.author.id]: action.author}
+        authors: {...state.authors, [action.author.id]: action.author},
+        currentAuthor: emptyAuthor
       };
     case types.AUTHOR_ADD_FAIL:
       return {
@@ -61,12 +62,12 @@ export default function reduce(state = initialState, action = {}) {
         loading: false,
         error: action.error
       };
-    case types.AUTHOR_EDIT_REQUEST:
+    case types.AUTHOR_UPDATE_REQUEST:
       return {
         ...state,
         loading: true
       };
-    case types.AUTHOR_EDIT_SUCCESS:
+    case types.AUTHOR_UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -74,21 +75,16 @@ export default function reduce(state = initialState, action = {}) {
         authors: {...state.authors, [action.author.id]: action.author},
         currentAuthor: emptyAuthor
       };
-    case types.AUTHOR_EDIT_FAIL:
+    case types.AUTHOR_UPDATE_FAIL:
       return {
         ...state,
         loading: false,
         error: action.error
       };
-    case types.AUTHOR_FIELDS_START_EDIT:
-      return {
-        ...state,
-        currentAuthor: { ...state.currentAuthor, isEditing: true, ...action.author },
-    }
     case types.AUTHOR_FIELDS_EDIT:
       return {
         ...state,
-        currentAuthor: { ...state.currentAuthor, ...action.data },
+        currentAuthor: { ...state.currentAuthor, ...action.payload },
     }
     default:
       return state;
