@@ -44,8 +44,12 @@ exports.configureRoutes = (server) => server.route([{
       searchBy,
       searchValue,
     } = request.query;
-    const searchOptions = searchBy && searchValue
-     && { [searchBy]: { [Sequelize.Op.like]: `%${searchValue}%` } };
+    const searchOptions = searchBy && searchValue && Sequelize.where(
+      Sequelize.col(searchBy),
+      Sequelize.Op.like,
+      `%${searchValue}%`
+    );
+
     return Article.findAll({
       attributes: [
         [ Sequelize.col('article.id'), 'id' ],
