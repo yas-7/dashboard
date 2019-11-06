@@ -1,9 +1,9 @@
 import * as types from '../actions';
 
-const emptyAuthor ={
+const emptyAuthor = {
   isEditing: false,
   name: '',
-}
+};
 const initialState = {
   authors: {},
   error: null,
@@ -11,45 +11,48 @@ const initialState = {
   currentAuthor: emptyAuthor,
 };
 
-export default function reduce(state = initialState, action = {}) {
+export default function reduce (state = initialState, action = {}) {
   switch (action.type) {
     case types.AUTHORS_REQUEST:
       return { ...state, loading: true };
     case types.AUTHORS_FAIL:
-      return { ...state, loading: false, error: action.error }
+      return { ...state, loading: false, error: action.error };
     case types.AUTHORS_FETCHED:
-      const authors = action.authors.reduce((acc, item) => ({...acc,[item.id]: item}) ,{});
       return {
         ...state,
         loading: false,
-        authors,
+        authors: action.authors.reduce(
+          (acc, item) => ({ ...acc, [item.id]: item }),
+          {}
+        ),
       };
     case types.AUTHOR_ADD_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case types.AUTHOR_ADD_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
-        authors: {...state.authors, [action.author.id]: action.author},
-        currentAuthor: emptyAuthor
+        authors: { ...state.authors, [action.author.id]: action.author },
+        currentAuthor: emptyAuthor,
       };
     case types.AUTHOR_ADD_FAIL:
       return {
         ...state,
         loading: false,
-        error: action.error
+        error: action.error,
       };
     case types.AUTHOR_DELETE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case types.AUTHOR_DELETE_SUCCESS:
-        const { [action.id]: omit, ...filteredAuthors} = state.authors;
+      // eslint-disable-next-line no-case-declarations
+      const { [action.id]: omit, ...filteredAuthors } = state.authors;
       return {
         ...state,
         loading: false,
@@ -60,32 +63,32 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
-        error: action.error
+        error: action.error,
       };
     case types.AUTHOR_UPDATE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case types.AUTHOR_UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
-        authors: {...state.authors, [action.author.id]: action.author},
-        currentAuthor: emptyAuthor
+        authors: { ...state.authors, [action.author.id]: action.author },
+        currentAuthor: emptyAuthor,
       };
     case types.AUTHOR_UPDATE_FAIL:
       return {
         ...state,
         loading: false,
-        error: action.error
+        error: action.error,
       };
     case types.AUTHOR_FIELDS_EDIT:
       return {
         ...state,
         currentAuthor: { ...state.currentAuthor, ...action.payload },
-    }
+      };
     default:
       return state;
   }
