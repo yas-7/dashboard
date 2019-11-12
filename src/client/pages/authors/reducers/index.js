@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import * as types from '../actions';
 
 const emptyAuthor = {
@@ -9,7 +10,16 @@ const initialState = {
   error: null,
   loading: false,
   currentAuthor: emptyAuthor,
+  isPopupActive: false,
 };
+
+
+export const authorsSelector = (state) => state.authorsData.authors;
+export const getAuthorsIds = createSelector(
+  authorsSelector,
+  (result) => Object.keys(result)
+);
+export const getAuthorById = (state, id) => authorsSelector(state)[id];
 
 export default function reduce (state = initialState, action = {}) {
   switch (action.type) {
@@ -38,6 +48,7 @@ export default function reduce (state = initialState, action = {}) {
         error: null,
         authors: { ...state.authors, [action.author.id]: action.author },
         currentAuthor: emptyAuthor,
+        isPopupActive: false,
       };
     case types.AUTHOR_ADD_FAIL:
       return {
@@ -77,6 +88,7 @@ export default function reduce (state = initialState, action = {}) {
         error: null,
         authors: { ...state.authors, [action.author.id]: action.author },
         currentAuthor: emptyAuthor,
+        isPopupActive: false,
       };
     case types.AUTHOR_UPDATE_FAIL:
       return {
@@ -88,6 +100,7 @@ export default function reduce (state = initialState, action = {}) {
       return {
         ...state,
         currentAuthor: { ...state.currentAuthor, ...action.payload },
+        isPopupActive: true,
       };
     default:
       return state;
