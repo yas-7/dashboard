@@ -6,10 +6,10 @@ const outputDirectory = 'dist';
 
 module.exports = {
   entry: './src/client/index',
-  mode: 'development',
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   module: {
     rules: [{
@@ -26,6 +26,7 @@ module.exports = {
   },
   resolve: { extensions: [ '.js', '.jsx' ] },
   devServer: {
+    historyApiFallback: true,
     port: 3000,
     open: true,
     proxy: { '/api': 'http://localhost:8080' },
