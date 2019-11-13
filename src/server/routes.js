@@ -21,7 +21,6 @@ exports.configureRoutes = (server) => server.route([{
   handler: async (request) => {
     const author = await Author.findByPk(request.params.id);
     author.update(request.payload.author);
-
     return author.save();
   },
 }, {
@@ -29,7 +28,6 @@ exports.configureRoutes = (server) => server.route([{
   path: '/api/authors/{id}',
   handler: async (request) => {
     const author = await Author.findByPk(request.params.id);
-
     return author.destroy();
   },
 }, {
@@ -49,7 +47,6 @@ exports.configureRoutes = (server) => server.route([{
       Sequelize.Op.like,
       `%${searchValue}%`
     );
-
     return Article.findAll({
       attributes: [
         [ Sequelize.col('article.id'), 'id' ],
@@ -57,14 +54,10 @@ exports.configureRoutes = (server) => server.route([{
         'description',
         'body',
         'url',
-        'authorId',
-        'websiteId',
-        [ Sequelize.col('author.name'), 'author_name' ],
-        [ Sequelize.col('website.name'), 'website_name' ],
       ],
       include: [
-        { model: Author, attributes: [] },
-        { model: Website, attributes: [] },
+        { model: Author },
+        { model: Website },
       ],
       offset,
       limit,
@@ -83,12 +76,13 @@ exports.configureRoutes = (server) => server.route([{
   method: 'POST',
   path: '/api/articles',
   handler: async (request) => {
-    const author = await Author.findByPk(request.payload.authorId);
-    const website = await Website.findByPk(request.payload.websiteId);
+    const author = await Author.findByPk(request.payload.article.AuthorId);
+    const website = await Website.findByPk(request.payload.article.WebsiteId);
     const article = Article.build(request.payload.article);
     await article.setAuthor(author);
     await article.setWebsite(website);
-    return article.save();
+    await article.save();
+    return { ...article.get(), Author: author, Website: website };
   },
 }, {
   method: 'PUT',
@@ -96,7 +90,10 @@ exports.configureRoutes = (server) => server.route([{
   handler: async (request) => {
     const article = await Article.findByPk(request.params.id);
     article.update(request.payload.article);
-    return article.save();
+    await article.save();
+    const author = await Author.findByPk(article.AuthorId);
+    const website = await Website.findByPk(request.payload.article.WebsiteId);
+    return { ...article.get(), Author: author, Website: website };
   },
 }, {
   method: 'DELETE',
