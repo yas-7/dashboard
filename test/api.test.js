@@ -90,25 +90,25 @@ describe('api endpoints test', () => {
       url: '/api/websites',
       payload: { website: { name: data.websiteName } },
     });
-    const websiteId = createWebsite.result.id;
+    const WebsiteId = createWebsite.result.id;
 
     const createAuthor = await server.inject({
       method: 'POST',
       url: '/api/authors',
       payload: { author: { name: data.authorName } },
     });
-    const authorId = createAuthor.result.id;
+    const AuthorId = createAuthor.result.id;
 
     const createArticle = await server.inject({
       method: 'POST',
       url: '/api/articles',
       payload: {
-        websiteId,
-        authorId,
         article: {
           title: data.title,
           url: data.url,
           description: data.description,
+          WebsiteId,
+          AuthorId,
         },
       },
     });
@@ -122,8 +122,8 @@ describe('api endpoints test', () => {
 
     expect(getArticle.statusCode).to.equal(200);
     expect(getArticle.result.title).to.equal(data.title);
-    expect(getArticle.result.Author.id).to.equal(authorId);
-    expect(getArticle.result.Website.id).to.equal(websiteId);
+    expect(getArticle.result.Author.id).to.equal(AuthorId);
+    expect(getArticle.result.Website.id).to.equal(WebsiteId);
 
     const changeArticle = await server.inject({
       method: 'PUT',
