@@ -41,7 +41,7 @@ const Thead = (props) => {
             />
           </th>
         ))}
-        <th className="table__head">
+        <th className="table__head table__head--sm">
           <span>Edit / Delete</span>
         </th>
       </tr>
