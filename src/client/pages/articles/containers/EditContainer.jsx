@@ -10,17 +10,23 @@ const mapDispatchToProps = {
   editArticleFields: actions.editArticleFields,
   fetchAuthors,
   fetchWebsites,
+  cancelEdit: actions.cancelEdit,
+  fetchArticles: actions.fetchArticles,
+  changeFilter: actions.changeFilter,
 };
 
 function mapStateToProps (state) {
   return {
     currentArticle: state.articlesData.currentArticle,
-    authors: state.authorsData.authors,
-    websites: state.websitesData.websites,
+    authors: state.authorsData.authors.byId,
+    websites: state.websitesData.websites.byId,
     authorsError: state.authorsData.error,
     authorsLoading: state.authorsData.loading,
     websitesError: state.websitesData.error,
     websitesLoading: state.websitesData.loading,
+    filter: state.articlesData.filter,
+    order: state.articlesData.order,
+    pagination: state.articlesData.pagination,
   };
 }
 
