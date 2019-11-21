@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const outputDirectory = 'dist';
 
 module.exports = {
-  entry: './src/client/index',
+  entry: [ '@babel/polyfill', './src/client/index' ],
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
@@ -20,8 +20,17 @@ module.exports = {
       test: /\.css$/,
       use: [ 'style-loader', 'css-loader' ],
     }, {
-      test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+      test: /\.(png|woff|woff2|eot|ttf)$/,
       loader: 'file-loader',
+    }, {
+      test: /\.svg$/,
+      use: [
+        { loader: 'babel-loader' },
+        {
+          loader: 'react-svg-loader',
+          options: { jsx: true },
+        },
+      ],
     }],
   },
   resolve: { extensions: [ '.js', '.jsx' ] },

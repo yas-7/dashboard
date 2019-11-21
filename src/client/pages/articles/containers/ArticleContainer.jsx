@@ -1,17 +1,24 @@
 import { connect } from 'react-redux';
 import Article from '../components/Article';
-import { deleteArticle, editArticleFields } from '../actions';
-
-import { getArticleById, getAuthorByArticleId } from '../reducers';
+import * as actions from '../actions';
+import {
+  getWebsiteById,
+  getAuthorById,
+} from '../reducers';
 
 const mapStateToProps = (state, ownProps) => ({
-  article: getArticleById(state, ownProps.articleId),
-  author: getAuthorByArticleId(state, ownProps.articleId),
+  author: getAuthorById(state, ownProps.authorId),
+  website: getWebsiteById(state, ownProps.websiteId),
+  filter: state.articlesData.filter,
+  order: state.articlesData.order,
+  pagination: state.articlesData.pagination,
 });
 
 const mapDispatchToProps = {
-  deleteArticle,
-  editArticleFields,
+  deleteArticle: actions.deleteArticle,
+  editArticleFields: actions.editArticleFields,
+  fetchArticles: actions.fetchArticles,
+  changeFilter: actions.changeFilter,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Article);
