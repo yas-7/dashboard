@@ -6,6 +6,7 @@ const mapDispatchToProps = {
   addAuthor: actions.addAuthor,
   updateAuthor: actions.updateAuthor,
   editAuthorFields: actions.editAuthorFields,
+  cancelEdit: actions.cancelEdit,
 };
 
 function mapStateToProps (state) {

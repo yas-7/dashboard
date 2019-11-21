@@ -17,6 +17,9 @@ export const AUTHOR_UPDATE_FAIL = 'AUTHOR_UPDATE_FAIL';
 export const AUTHOR_UPDATE_SUCCESS = 'AUTHOR_UPDATE_SUCCESS';
 
 export const AUTHOR_FIELDS_EDIT = 'AUTHOR_FIELDS_EDIT';
+export const AUTHOR_CANCEL_EDIT = 'AUTHOR_CANCEL_EDIT';
+export const AUTHOR_HIDE_MESSAGE = 'AUTHOR_HIDE_MESSAGE';
+export const AUTHOR_SHOW_MESSAGE = 'AUTHOR_SHOW_MESSAGE';
 
 export const fetchAuthors = () => (dispatch) => {
   dispatch({ type: AUTHORS_REQUEST });
@@ -45,7 +48,13 @@ export const deleteAuthor = (id) => (dispatch) => {
   dispatch({ type: AUTHOR_DELETE_REQUEST });
   return axios
     .delete(`/api/authors/${id}`)
-    .then(() => dispatch({ type: AUTHOR_DELETE_SUCCESS, id }))
+    .then((res) => {
+      if (res.data.error) {
+        dispatch({ type: AUTHOR_SHOW_MESSAGE, message: res.data.error });
+      } else {
+        dispatch({ type: AUTHOR_DELETE_SUCCESS, id });
+      }
+    })
     .catch((error) => dispatch({
       type: AUTHOR_DELETE_FAIL,
       error: error.response,
@@ -67,3 +76,7 @@ export const editAuthorFields = (author) => (dispatch) => dispatch({
   type: AUTHOR_FIELDS_EDIT,
   payload: author,
 });
+
+export const cancelEdit = () => (dispatch) => dispatch({ type: AUTHOR_CANCEL_EDIT });
+export const hideMessage = () => (dispatch) => dispatch({ type: AUTHOR_HIDE_MESSAGE });
+export const showMessage = (message) => (dispatch) => dispatch({ type: AUTHOR_SHOW_MESSAGE, message });

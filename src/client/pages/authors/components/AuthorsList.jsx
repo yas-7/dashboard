@@ -17,27 +17,24 @@ class AuthorsList extends Component {
     const {
       error,
       loading,
-      authorsIds,
+      authors,
     } = this.props;
 
     if (error) {
-      return <p>An error has occurred! Please reload page</p>;
+      return error || <p>An error has occurred! Please reload page</p>;
     }
 
     if (loading) {
       return <p>Loading....</p>;
     }
     return (
-      <div>
-        <button type="button" onClick={this.showEmptyForm}>add new</button>
-        <ul>
-          {authorsIds.map((id) => (
-            <li key={id}>
-              <AuthorContainer authorId={id} />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul>
+        {authors.allIds.map((id) => (
+          <li key={id}>
+            <AuthorContainer author={authors.byId[id]} />
+          </li>
+        ))}
+      </ul>
     );
   }
 }
@@ -45,7 +42,7 @@ class AuthorsList extends Component {
 AuthorsList.propTypes = {
   error: PropTypes.object,
   loading: PropTypes.bool,
-  authorsIds: PropTypes.array.isRequired,
+  authors: PropTypes.object.isRequired,
   fetchAuthors: PropTypes.func.isRequired,
   editAuthorFields: PropTypes.func.isRequired,
 };

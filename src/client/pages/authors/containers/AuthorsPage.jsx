@@ -3,14 +3,36 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AuthorsContainer from './AuthorsContainer';
 import EditContainer from './EditContainer';
+import Popup from '../../../components/Popup';
+import Header from '../../../components/Header';
+import { editAuthorFields, hideMessage } from '../actions';
+import Notification from '../../../components/Notification';
 
-const AuthorsPage = ({ isPopupActive }) => (
-  <div>
+const AuthorsPage = ({ isPopupActive, editAuthorFields, notification, hideMessage }) => (
+  <React.Fragment>
+    <Header addHandler={editAuthorFields} />
     <AuthorsContainer />
-    {isPopupActive ? <EditContainer /> : null}
-  </div>
+    <Popup isPopupActive={isPopupActive}><EditContainer /></Popup>
+    <Notification message={notification} hideMessage={hideMessage} />
+  </React.Fragment>
 );
 
-AuthorsPage.propTypes = { isPopupActive: PropTypes.bool };
+const mapStateToProps = (state) => ({
+  isPopupActive: state.authorsData.isPopupActive,
+  notification: state.authorsData.notification,
+});
 
-export default connect((state) => ({ isPopupActive: state.authorsData.isPopupActive }))(AuthorsPage);
+const mapDispatchToProps = {
+  editAuthorFields,
+  hideMessage,
+};
+
+
+AuthorsPage.propTypes = {
+  isPopupActive: PropTypes.bool,
+  editAuthorFields: PropTypes.func.isRequired,
+  hideMessage: PropTypes.func.isRequired,
+  notification: PropTypes.string,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthorsPage);
