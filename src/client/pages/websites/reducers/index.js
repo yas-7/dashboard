@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect';
 import * as types from '../actions';
 
 const emptyWebsite = {
@@ -6,101 +5,104 @@ const emptyWebsite = {
   name: '',
 };
 const initialState = {
-  websites: {},
+  websites: { allIds: [], byId: {} },
   error: null,
   loading: false,
   currentWebsite: emptyWebsite,
   isPopupActive: false,
+  notification: null,
 };
-
-export const websitesSelector = (state) => state.websitesData.websites;
-export const getWebsitesIds = createSelector(
-  websitesSelector,
-  (result) => Object.keys(result)
-);
-export const getWebsiteById = (state, id) => websitesSelector(state)[id];
-
 
 export default function reduce (state = initialState, action = {}) {
   switch (action.type) {
     case types.WEBSITES_REQUEST:
+    case types.WEBSITE_ADD_REQUEST:
+    case types.WEBSITE_DELETE_REQUEST:
+    case types.WEBSITE_UPDATE_REQUEST:
       return { ...state, loading: true };
     case types.WEBSITES_FAIL:
+    case types.WEBSITE_ADD_FAIL:
+    case types.WEBSITE_DELETE_FAIL:
+    case types.WEBSITE_UPDATE_FAIL:
       return { ...state, loading: false, error: action.error };
     case types.WEBSITES_FETCHED:
       return {
         ...state,
         loading: false,
         websites: action.websites.reduce(
-          (acc, item) => ({ ...acc, [item.id]: item }),
-          {}
+          (acc, website) => ({
+            byId: {
+              ...acc.byId,
+              [website.id]: website,
+            },
+            allIds: [ ...acc.allIds, website.id ],
+          }),
+          { allIds: [], byId: {} }
         ),
-      };
-    case types.WEBSITE_ADD_REQUEST:
-      return {
-        ...state,
-        loading: true,
       };
     case types.WEBSITE_ADD_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
-        websites: { ...state.websites, [action.website.id]: action.website },
+        websites: {
+          byId: {
+            ...state.websites.byId,
+            [action.website.id]: action.website,
+          },
+          allIds: [ ...state.websites.allIds, action.website.id ],
+        },
         currentWebsite: emptyWebsite,
         isPopupActive: false,
       };
-    case types.WEBSITE_ADD_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      };
-    case types.WEBSITE_DELETE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
     case types.WEBSITE_DELETE_SUCCESS:
       // eslint-disable-next-line no-case-declarations
-      const { [action.id]: omit, ...filteredWebsites } = state.websites;
+      const { [action.id]: omit, ...filteredWebsites } = state.websites.byId;
       return {
         ...state,
         loading: false,
         error: null,
-        websites: filteredWebsites,
-      };
-    case types.WEBSITE_DELETE_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      };
-    case types.WEBSITE_UPDATE_REQUEST:
-      return {
-        ...state,
-        loading: true,
+        websites: {
+          ...state.websites,
+          byId: filteredWebsites,
+          allIds: state.websites.allIds.filter((id) => id !== action.id),
+        },
       };
     case types.WEBSITE_UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
-        websites: { ...state.websites, [action.website.id]: action.website },
+        websites: {
+          ...state.websites,
+          byId: { ...state.websites.byId, [action.website.id]: action.website },
+        },
         currentWebsite: emptyWebsite,
         isPopupActive: false,
-      };
-    case types.WEBSITE_UPDATE_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
       };
     case types.WEBSITE_FIELDS_EDIT:
       return {
         ...state,
         currentWebsite: { ...state.currentWebsite, ...action.payload },
         isPopupActive: true,
+      };
+    case types.WEBSITE_CANCEL_EDIT:
+      return {
+        ...state,
+        currentWebsite: emptyWebsite,
+        isPopupActive: false,
+      };
+    case types.WEBSITE_HIDE_MESSAGE:
+      return {
+        ...state,
+        notification: null,
+        loading: false,
+      };
+    case types.WEBSITE_SHOW_MESSAGE:
+      return {
+        ...state,
+        notification: action.message,
+        loading: false,
       };
     default:
       return state;

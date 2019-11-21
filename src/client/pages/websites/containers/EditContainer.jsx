@@ -6,6 +6,7 @@ const mapDispatchToProps = {
   addWebsite: actions.addWebsite,
   updateWebsite: actions.updateWebsite,
   editWebsiteFields: actions.editWebsiteFields,
+  cancelEdit: actions.cancelEdit,
 };
 
 function mapStateToProps (state) {

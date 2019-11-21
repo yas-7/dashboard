@@ -17,7 +17,7 @@ class WebsitesList extends Component {
     const {
       error,
       loading,
-      websitesIds,
+      websites,
     } = this.props;
 
     if (error) {
@@ -28,16 +28,13 @@ class WebsitesList extends Component {
       return <p>Loading....</p>;
     }
     return (
-      <div>
-        <button type="button" onClick={this.showEmptyForm}>add new</button>
-        <ul>
-          {websitesIds.map((id) => (
-            <li key={id}>
-              <WebsiteContainer websiteId={id} />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul>
+        {websites.allIds.map((id) => (
+          <li key={id}>
+            <WebsiteContainer website={websites.byId[id]} />
+          </li>
+        ))}
+      </ul>
     );
   }
 }
@@ -45,7 +42,7 @@ class WebsitesList extends Component {
 WebsitesList.propTypes = {
   error: PropTypes.object,
   loading: PropTypes.bool,
-  websitesIds: PropTypes.array.isRequired,
+  websites: PropTypes.object.isRequired,
   fetchWebsites: PropTypes.func.isRequired,
   editWebsiteFields: PropTypes.func.isRequired,
 };

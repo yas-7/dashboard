@@ -17,6 +17,9 @@ export const WEBSITE_UPDATE_FAIL = 'WEBSITE_UPDATE_FAIL';
 export const WEBSITE_UPDATE_SUCCESS = 'WEBSITE_UPDATE_SUCCESS';
 
 export const WEBSITE_FIELDS_EDIT = 'WEBSITE_FIELDS_EDIT';
+export const WEBSITE_CANCEL_EDIT = 'WEBSITE_CANCEL_EDIT';
+export const WEBSITE_HIDE_MESSAGE = 'WEBSITE_HIDE_MESSAGE';
+export const WEBSITE_SHOW_MESSAGE = 'WEBSITE_SHOW_MESSAGE';
 
 export const fetchWebsites = () => (dispatch) => {
   dispatch({ type: WEBSITES_REQUEST });
@@ -45,7 +48,13 @@ export const deleteWebsite = (id) => (dispatch) => {
   dispatch({ type: WEBSITE_DELETE_REQUEST });
   return axios
     .delete(`/api/websites/${id}`)
-    .then(() => dispatch({ type: WEBSITE_DELETE_SUCCESS, id }))
+    .then((res) => {
+      if (res.data.error) {
+        dispatch({ type: WEBSITE_SHOW_MESSAGE, message: res.data.error });
+      } else {
+        dispatch({ type: WEBSITE_DELETE_SUCCESS, id });
+      }
+    })
     .catch((error) => dispatch({
       type: WEBSITE_DELETE_FAIL,
       error: error.response,
@@ -70,3 +79,7 @@ export const editWebsiteFields = (website) => (dispatch) => dispatch({
   type: WEBSITE_FIELDS_EDIT,
   payload: website,
 });
+
+export const cancelEdit = () => (dispatch) => dispatch({ type: WEBSITE_CANCEL_EDIT });
+export const hideMessage = () => (dispatch) => dispatch({ type: WEBSITE_HIDE_MESSAGE });
+export const showMessage = (message) => (dispatch) => dispatch({ type: WEBSITE_SHOW_MESSAGE, message });
