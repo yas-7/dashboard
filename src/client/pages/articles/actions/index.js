@@ -19,22 +19,29 @@ export const ARTICLE_UPDATE_FAIL = 'ARTICLE_UPDATE_FAIL';
 export const ARTICLE_UPDATE_SUCCESS = 'ARTICLE_UPDATE_SUCCESS';
 
 export const ARTICLE_FIELDS_EDIT = 'ARTICLE_FIELDS_EDIT';
+export const ARTICLE_CANCEL_EDIT = 'ARTICLE_CANCEL_EDIT';
+export const ARTICLE_CHANGE_FILTER = 'ARTICLE_CHANGE_FILTER';
+export const ARTICLE_CHANGE_ORDER = 'ARTICLE_CHANGE_ORDER';
+export const ARTICLE_CHANGE_PAGINATION = 'ARTICLE_CHANGE_PAGINATION';
 
-export const fetchArticles = () => (dispatch) => {
+export const fetchArticles = (params) => (dispatch) => {
   dispatch({ type: ARTICLES_REQUEST });
   return axios
-    .get('/api/articles')
+    .get('/api/articles', { params })
     .then((res) => {
-      const articles = res.data;
+      const { count, rows: articles } = res.data;
       const authors = articles.map((article) => article.Author);
       const websites = articles.map((article) => article.Website);
       dispatch({ type: AUTHORS_FETCHED, authors });
       dispatch({ type: WEBSITES_FETCHED, websites });
       dispatch({ type: ARTICLES_FETCHED, articles });
+      dispatch({
+        type: ARTICLE_CHANGE_PAGINATION,
+        pagination: { limit: params.limit, offset: params.offset, count },
+      });
     })
     .catch((error) => dispatch({ type: ARTICLES_FAIL, error: error.response }));
 };
-
 
 export const addArticle = (article) => (dispatch) => {
   dispatch({ type: ARTICLE_ADD_REQUEST });
@@ -76,3 +83,20 @@ export const editArticleFields = (article) => (dispatch) => dispatch({
   type: ARTICLE_FIELDS_EDIT,
   payload: article,
 });
+
+export const changeFilter = (filter) => (dispatch) => dispatch({
+  type: ARTICLE_CHANGE_FILTER,
+  filter,
+});
+
+export const changeOrder = (order) => (dispatch) => dispatch({
+  type: ARTICLE_CHANGE_ORDER,
+  order,
+});
+
+export const changePagination = (pagination) => (dispatch) => dispatch({
+  type: ARTICLE_CHANGE_PAGINATION,
+  pagination,
+});
+
+export const cancelEdit = () => (dispatch) => dispatch({ type: ARTICLE_CANCEL_EDIT  });
