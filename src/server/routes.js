@@ -51,7 +51,7 @@ exports.configureRoutes = (server) => server.route([{
       Sequelize.Op.like,
       `%${searchValue}%`
     );
-    return Article.findAll({
+    return Article.findAndCountAll({
       attributes: [
         [ Sequelize.col('article.id'), 'id' ],
         'title',
