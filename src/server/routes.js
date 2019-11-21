@@ -28,6 +28,10 @@ exports.configureRoutes = (server) => server.route([{
   path: '/api/authors/{id}',
   handler: async (request) => {
     const author = await Author.findByPk(request.params.id);
+    const articles = await author.getArticles();
+    if (articles.length > 0) {
+      return { error: 'Author has related articles!' };
+    }
     return author.destroy();
   },
 }, {
@@ -127,6 +131,10 @@ exports.configureRoutes = (server) => server.route([{
   path: '/api/websites/{id}',
   handler: async (request) => {
     const website = await Website.findByPk(request.params.id);
+    const articles = await website.getArticles();
+    if (articles.length > 0) {
+      return { error: 'Website has related articles!' };
+    }
     return website.destroy();
   },
 },
