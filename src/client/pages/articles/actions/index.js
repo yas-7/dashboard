@@ -1,4 +1,5 @@
 import axios from 'axios';
+import uniqBy from 'lodash.uniqby';
 import { AUTHORS_FETCHED } from '../../authors/actions';
 import { WEBSITES_FETCHED } from '../../websites/actions';
 
@@ -30,8 +31,8 @@ export const fetchArticles = (params) => (dispatch) => {
     .get('/api/articles', { params })
     .then((res) => {
       const { count, rows: articles } = res.data;
-      const authors = articles.map((article) => article.Author);
-      const websites = articles.map((article) => article.Website);
+      const authors = uniqBy(articles.map((article) => article.Author), 'id');
+      const websites = uniqBy(articles.map((article) => article.Website), 'id');
       dispatch({ type: AUTHORS_FETCHED, authors });
       dispatch({ type: WEBSITES_FETCHED, websites });
       dispatch({ type: ARTICLES_FETCHED, articles });
@@ -99,4 +100,4 @@ export const changePagination = (pagination) => (dispatch) => dispatch({
   pagination,
 });
 
-export const cancelEdit = () => (dispatch) => dispatch({ type: ARTICLE_CANCEL_EDIT  });
+export const cancelEdit = () => (dispatch) => dispatch({ type: ARTICLE_CANCEL_EDIT });
