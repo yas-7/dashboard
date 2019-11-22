@@ -1,0 +1,254 @@
+body {
+  margin: 0;
+}
+
+.header__nav {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background: #f2f2f2;
+  border-bottom: 1px solid #bcc3ce;
+}
+
+.header__actions {
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
+}
+
+.header__link {
+  display: inline-block;
+  padding-right: 30px;
+  text-decoration: none;
+}
+
+.header__link.active {
+  color: #435cab;
+  font-weight: bold;
+}
+
+.header__add-btn {
+  padding: 5px 10px;
+  margin-right: 100px;
+}
+
+.search-form__item {
+  padding: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.content {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.table {
+  width: 100%;
+  font-size: 14px;
+  background: #fff;
+  border-collapse: collapse;
+  text-align: left;
+  table-layout: fixed;
+  margin-bottom: 30px;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.table__head {
+  padding: 10px 8px;
+  min-width: 90px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #039;
+  border-bottom: 2px solid #6678b1;
+}
+
+.table__head:nth-child(2) {
+  width: 300px;
+}
+
+.table__head--sm {
+  width: 100px;
+}
+
+.table__data {
+  color: #669;
+  padding: 9px 8px 0;
+  word-break: break-all;
+}
+
+tr:hover .table__data {
+  color: #009;
+}
+
+tr:nth-child(2n) .table__data {
+  background-color: #f7f7f7;
+}
+
+.order {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border 0.3s linear;
+}
+
+.desc {
+  margin-left: 5px;
+  border-width: 9px 6px 0;
+  border-color:#cecece transparent transparent;
+}
+
+.desc:hover {
+  border-top-color: #6678b1;
+}
+
+.asc {
+  margin-left: 8px;
+  border-width: 0 6px 9px;
+  border-color: transparent transparent #cecece;
+}
+
+.asc:hover {
+  border-bottom-color: #6678b1;
+}
+
+.asc.active {
+  border-bottom-color: #435cab;
+}
+
+.desc.active {
+  border-top-color: #435cab
+}
+
+.table__button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.table__icon {
+  width: 15px;
+}
+.table__icon:hover path{
+  fill: red;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  overflow: auto;
+}
+.popup {
+  position: relative;
+  width: 400px;
+  margin: 70px auto;
+  padding: 30px 25px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.notification {
+  position: fixed;
+  background: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0px 0px 4px 1px #c5c5c5;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.notification__content {
+  padding: 5px 10px;
+  color: #696363;
+}
+.form  {
+  background: #fff;
+}
+.form__close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 25px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #435cab;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.form__item {
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form__item--textarea {
+  height: 120px;
+  font-size: 14px;
+  font-family: initial;
+}
+
+.form__submit {
+  display: block;
+  width: 100px;
+  margin: 0 auto;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.pagination {
+  position: fixed;
+  bottom: 0;
+  border-top: 1px solid #435cab;
+  background: #fff;
+  width: 100%;
+  padding: 10px 20px;
+}
+.pagination__group {
+  display: inline-block;
+  margin-right: 30px;
+  font-size: 14px;
+}
+.pagination__info {
+  margin-right: 5px;
+}
+.pagination__select {
+  font-size: 14px;
+  padding: 0 5px;
+}
+
+.btn {
+  color: #fff;
+  border: 2px solid #435cab;
+  background-color: #435cab;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.btn:hover {
+  background: #6678b1;
+}
+
+.btn:disabled {
+  background: grey;
+  color: #fff;
+  border-color: grey;
+  cursor: not-allowed;
+}
+
+.pagination__control {
+  margin-left: 10px;
+}

@@ -6,6 +6,7 @@ import store from './store';
 import WebsitesPage from './pages/websites/containers/WebsitesPage';
 import ArticlesPage from './pages/articles/containers/ArticlesPage';
 import AuthorsPage from './pages/authors/containers/AuthorsPage';
+import './style.css';
 
 ReactDOM.render(
   <Provider store={store}>
