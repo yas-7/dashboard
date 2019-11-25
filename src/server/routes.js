@@ -6,7 +6,27 @@ const { Author, Website, Article } = db;
 exports.configureRoutes = (server) => server.route([{
   method: 'GET',
   path: '/api/authors',
-  handler: () => Author.findAll(),
+  handler: (request) => {
+    const {
+      limit,
+      offset,
+      orderBy = 'id',
+      direction = 'asc',
+      searchBy,
+      searchValue,
+    } = request.query;
+    const searchOptions = searchBy && searchValue && Sequelize.where(
+      Sequelize.col(searchBy),
+      Sequelize.Op.like,
+      `%${searchValue}%`
+    );
+    return Author.findAndCountAll({
+      offset,
+      limit,
+      order: [[ Sequelize.col(orderBy), direction ]],
+      where: searchOptions || null,
+    });
+  },
 }, {
   method: 'GET',
   path: '/api/authors/{id}',
@@ -91,14 +111,7 @@ exports.configureRoutes = (server) => server.route([{
 }, {
   method: 'PUT',
   path: '/api/articles/{id}',
-  handler: async (request) => {
-    const article = await Article.findByPk(request.params.id);
-    article.update(request.payload.article);
-    await article.save();
-    const author = await Author.findByPk(article.AuthorId);
-    const website = await Website.findByPk(request.payload.article.WebsiteId);
-    return { ...article.get(), Author: author, Website: website };
-  },
+  handler: () => Website.findAll(),
 }, {
   method: 'DELETE',
   path: '/api/articles/{id}',
@@ -109,7 +122,27 @@ exports.configureRoutes = (server) => server.route([{
 }, {
   method: 'GET',
   path: '/api/websites',
-  handler: () => Website.findAll(),
+  handler: (request) => {
+    const {
+      limit,
+      offset,
+      orderBy = 'id',
+      direction = 'asc',
+      searchBy,
+      searchValue,
+    } = request.query;
+    const searchOptions = searchBy && searchValue && Sequelize.where(
+      Sequelize.col(searchBy),
+      Sequelize.Op.like,
+      `%${searchValue}%`
+    );
+    return Website.findAndCountAll({
+      offset,
+      limit,
+      order: [[ Sequelize.col(orderBy), direction ]],
+      where: searchOptions || null,
+    });
+  },
 }, {
   method: 'GET',
   path: '/api/websites/{id}',

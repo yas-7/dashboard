@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 class EditForm extends Component {
   componentDidMount () {
     const { fetchAuthors, fetchWebsites } = this.props;
-    fetchAuthors();
-    fetchWebsites();
+    fetchAuthors({});
+    fetchWebsites({});
   }
 
   handleSubmit = async (e) => {

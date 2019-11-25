@@ -11,6 +11,13 @@ const initialState = {
   currentAuthor: emptyAuthor,
   isPopupActive: false,
   notification: null,
+  filter: { searchBy: 'name', searchValue: '' },
+  order: { orderBy: 'name', direction: 'asc' },
+  pagination: {
+    limit: 2,
+    offset: 0,
+    count: 0,
+  },
 };
 
 export default function reduce (state = initialState, action = {}) {
@@ -90,6 +97,21 @@ export default function reduce (state = initialState, action = {}) {
         ...state,
         currentAuthor: emptyAuthor,
         isPopupActive: false,
+      };
+    case types.AUTHOR_CHANGE_ORDER:
+      return {
+        ...state,
+        order: { ...state.order, ...action.order },
+      };
+    case types.AUTHOR_CHANGE_FILTER:
+      return {
+        ...state,
+        filter: { ...state.filter, ...action.filter },
+      };
+    case types.AUTHOR_CHANGE_PAGINATION:
+      return {
+        ...state,
+        pagination: { ...state.pagination, ...action.pagination },
       };
     case types.AUTHOR_HIDE_MESSAGE:
       return {

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
 const EditForm = (props) => {
   const {
     currentAuthor,
@@ -9,15 +8,22 @@ const EditForm = (props) => {
     addAuthor,
     editAuthorFields,
     cancelEdit,
+    changeFilter,
+    fetchAuthors,
+    filter,
+    order,
+    pagination,
   } = props;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentAuthor.isEditing) {
-      updateAuthor(currentAuthor);
+      await updateAuthor(currentAuthor);
     } else {
-      addAuthor(currentAuthor);
+      await addAuthor(currentAuthor);
     }
+    changeFilter({ searchValue: '' });
+    fetchAuthors({ ...filter, searchValue: '', ...order, ...pagination, offset: 0 });
   };
 
   const editFields = ({ target }) => {
@@ -50,6 +56,11 @@ EditForm.propTypes = {
   addAuthor: PropTypes.func.isRequired,
   editAuthorFields: PropTypes.func,
   cancelEdit: PropTypes.func.isRequired,
+  changeFilter: PropTypes.func.isRequired,
+  fetchAuthors: PropTypes.func.isRequired,
+  filter: PropTypes.object.isRequired,
+  order: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
 };
 
 export default EditForm;
