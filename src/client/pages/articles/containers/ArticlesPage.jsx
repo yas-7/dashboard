@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ArticlesList from '../components/ArticlesList';
+import ArticlesList from './ArticlesList';
 import EditContainer from './EditContainer';
 import Popup from '../../../components/Popup';
 import Pagination from '../../../components/Pagination';

@@ -3,20 +3,13 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 const Thead = (props) => {
-  const { fetchArticles, changeOrder, filter, order, pagination } = props;
+  const { headers, fetchData, changeOrder, filter, order, pagination } = props;
 
   const handleOrder = (orderBy, direction) => {
     changeOrder({ orderBy, direction });
-    fetchArticles({ orderBy, direction, ...filter, ...pagination, offset: 0 });
+    fetchData({ orderBy, direction, ...filter, ...pagination, offset: 0 });
   };
 
-  const headers = {
-    title: 'Title',
-    description: 'Description',
-    url: 'URL',
-    'Author.name': 'Author',
-    'Website.name': 'Domain',
-  };
 
   const getClsNames = (orderBy, direction) => cn({
     order: true,
@@ -51,11 +44,12 @@ const Thead = (props) => {
 };
 
 Thead.propTypes = {
-  fetchArticles: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
   changeOrder: PropTypes.func.isRequired,
   filter: PropTypes.object,
   order: PropTypes.object,
   pagination: PropTypes.object,
+  headers: PropTypes.object,
 };
 
 export default Thead;
