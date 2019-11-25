@@ -11,6 +11,13 @@ const initialState = {
   currentWebsite: emptyWebsite,
   isPopupActive: false,
   notification: null,
+  filter: { searchBy: 'name', searchValue: '' },
+  order: { orderBy: 'name', direction: 'asc' },
+  pagination: {
+    limit: 2,
+    offset: 0,
+    count: 0,
+  },
 };
 
 export default function reduce (state = initialState, action = {}) {
@@ -103,6 +110,21 @@ export default function reduce (state = initialState, action = {}) {
         ...state,
         notification: action.message,
         loading: false,
+      };
+    case types.WEBSITE_CHANGE_ORDER:
+      return {
+        ...state,
+        order: { ...state.order, ...action.order },
+      };
+    case types.WEBSITE_CHANGE_FILTER:
+      return {
+        ...state,
+        filter: { ...state.filter, ...action.filter },
+      };
+    case types.WEBSITE_CHANGE_PAGINATION:
+      return {
+        ...state,
+        pagination: { ...state.pagination, ...action.pagination },
       };
     default:
       return state;

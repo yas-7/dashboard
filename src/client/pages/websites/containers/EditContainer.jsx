@@ -7,12 +7,17 @@ const mapDispatchToProps = {
   updateWebsite: actions.updateWebsite,
   editWebsiteFields: actions.editWebsiteFields,
   cancelEdit: actions.cancelEdit,
+  fetchWebsites: actions.fetchWebsites,
+  changeFilter: actions.changeFilter,
 };
 
 function mapStateToProps (state) {
   return {
     currentWebsite: state.websitesData.currentWebsite,
     websites: state.websitesData.websites,
+    filter: state.websitesData.filter,
+    order: state.websitesData.order,
+    pagination: state.websitesData.pagination,
   };
 }
 

@@ -21,17 +21,27 @@ export const WEBSITE_CANCEL_EDIT = 'WEBSITE_CANCEL_EDIT';
 export const WEBSITE_HIDE_MESSAGE = 'WEBSITE_HIDE_MESSAGE';
 export const WEBSITE_SHOW_MESSAGE = 'WEBSITE_SHOW_MESSAGE';
 
-export const fetchWebsites = () => (dispatch) => {
+export const WEBSITE_CHANGE_FILTER = 'WEBSITE_CHANGE_FILTER';
+export const WEBSITE_CHANGE_ORDER = 'WEBSITE_CHANGE_ORDER';
+export const WEBSITE_CHANGE_PAGINATION = 'WEBSITE_CHANGE_PAGINATION';
+
+export const fetchWebsites = (params) => (dispatch) => {
   dispatch({ type: WEBSITES_REQUEST });
   return axios
-    .get('/api/websites')
-    .then((websites) => dispatch({
-      type: WEBSITES_FETCHED,
-      websites: websites.data,
-    }))
+    .get('/api/websites', { params })
+    .then((res) => {
+      const { count, rows: websites } = res.data;
+      dispatch({
+        type: WEBSITES_FETCHED,
+        websites,
+      });
+      dispatch({
+        type: WEBSITE_CHANGE_PAGINATION,
+        pagination: { limit: params.limit, offset: params.offset, count },
+      });
+    })
     .catch((error) => dispatch({ type: WEBSITES_FAIL, error: error.response }));
 };
-
 
 export const addWebsite = (website) => (dispatch) => {
   dispatch({ type: WEBSITE_ADD_REQUEST });
@@ -83,3 +93,18 @@ export const editWebsiteFields = (website) => (dispatch) => dispatch({
 export const cancelEdit = () => (dispatch) => dispatch({ type: WEBSITE_CANCEL_EDIT });
 export const hideMessage = () => (dispatch) => dispatch({ type: WEBSITE_HIDE_MESSAGE });
 export const showMessage = (message) => (dispatch) => dispatch({ type: WEBSITE_SHOW_MESSAGE, message });
+
+export const changeFilter = (filter) => (dispatch) => dispatch({
+  type: WEBSITE_CHANGE_FILTER,
+  filter,
+});
+
+export const changeOrder = (order) => (dispatch) => dispatch({
+  type: WEBSITE_CHANGE_ORDER,
+  order,
+});
+
+export const changePagination = (pagination) => (dispatch) => dispatch({
+  type: WEBSITE_CHANGE_PAGINATION,
+  pagination,
+});

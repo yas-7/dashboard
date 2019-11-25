@@ -2,22 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const EditForm = (props) => {
-
   const {
     currentWebsite,
     updateWebsite,
     addWebsite,
     editWebsiteFields,
     cancelEdit,
+    changeFilter,
+    fetchWebsites,
+    filter,
+    order,
+    pagination,
   } = props;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentWebsite.isEditing) {
-      updateWebsite(currentWebsite);
+      await updateWebsite(currentWebsite);
     } else {
-      addWebsite(currentWebsite);
+      await addWebsite(currentWebsite);
     }
+    changeFilter({ searchValue: '' });
+    fetchWebsites({ ...filter, searchValue: '', ...order, ...pagination, offset: 0 });
   };
 
   const editFields = ({ target }) => {
@@ -50,6 +56,11 @@ EditForm.propTypes = {
   addWebsite: PropTypes.func.isRequired,
   editWebsiteFields: PropTypes.func,
   cancelEdit: PropTypes.func.isRequired,
+  changeFilter: PropTypes.func.isRequired,
+  fetchWebsites: PropTypes.func.isRequired,
+  filter: PropTypes.object.isRequired,
+  order: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
 };
 
 export default EditForm;

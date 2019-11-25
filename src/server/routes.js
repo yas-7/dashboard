@@ -111,7 +111,14 @@ exports.configureRoutes = (server) => server.route([{
 }, {
   method: 'PUT',
   path: '/api/articles/{id}',
-  handler: () => Website.findAll(),
+  handler: async (request) => {
+    const article = await Article.findByPk(request.params.id);
+    article.update(request.payload.article);
+    await article.save();
+    const author = await Author.findByPk(article.AuthorId);
+    const website = await Website.findByPk(request.payload.article.WebsiteId);
+    return { ...article.get(), Author: author, Website: website };
+  },
 }, {
   method: 'DELETE',
   path: '/api/articles/{id}',

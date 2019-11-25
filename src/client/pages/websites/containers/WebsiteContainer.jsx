@@ -1,10 +1,19 @@
 import { connect } from 'react-redux';
-import Website from '../components/Website';
-import { deleteWebsite, editWebsiteFields } from '../actions';
+import WebsiteRow from '../components/WebsiteRow';
+import { deleteWebsite, editWebsiteFields, fetchWebsites, changeFilter } from '../actions';
+
+const mapStateToProps = (state) => ({
+  filter: state.websitesData.filter,
+  order: state.websitesData.order,
+  pagination: state.websitesData.pagination,
+});
 
 const mapDispatchToProps = {
   deleteWebsite,
   editWebsiteFields,
+  fetchWebsites,
+  changeFilter,
+
 };
 
-export default connect(null, mapDispatchToProps)(Website);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteRow);
