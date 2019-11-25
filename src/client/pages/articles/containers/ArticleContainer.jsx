@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Article from '../components/Article';
+import ArticleRow from '../components/ArticleRow';
 import * as actions from '../actions';
 import {
   getWebsiteById,
@@ -21,4 +21,4 @@ const mapDispatchToProps = {
   changeFilter: actions.changeFilter,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Article);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleRow);

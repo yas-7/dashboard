@@ -28,13 +28,12 @@ class Tbody extends Component {
           const article = articles.byId[id];
           const { AuthorId, WebsiteId } = article;
           return (
-            <tr key={id}>
-              <ArticleContainer
-                article={article}
-                authorId={AuthorId}
-                websiteId={WebsiteId}
-              />
-            </tr>
+            <ArticleContainer
+              key={id}
+              article={article}
+              authorId={AuthorId}
+              websiteId={WebsiteId}
+            />
           );
         })}
       </tbody>

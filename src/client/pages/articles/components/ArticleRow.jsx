@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DeleteIcon from '../../../images/garbage.svg';
-import EditIcon from '../../../images/edit.svg';
+import { EditButton, DeleteButton } from '../../../components/Buttons';
 
-const Article = (props) => {
+const ArticleRow = (props) => {
   const {
     article,
     author,
@@ -24,33 +23,21 @@ const Article = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <tr>
       <td className="table__data">{article.title}</td>
       <td className="table__data">{article.description}</td>
       <td className="table__data">{article.url}</td>
-      <td className="table__data">{author.name}</td>
-      <td className="table__data">{website.name}</td>
+      <td className="table__data">{author && author.name}</td>
+      <td className="table__data">{website && website.name}</td>
       <td className="table__data">
-        <button
-          className="table__button"
-          type="button"
-          onClick={() => editArticleFields({ ...article, isEditing: true })}
-        >
-          <EditIcon className="table__icon" />
-        </button>
-        <button
-          className="table__button"
-          type="button"
-          onClick={() => handleDeleteArticle(article.id)}
-        >
-          <DeleteIcon className="table__icon" />
-        </button>
+        <EditButton handleEdit={editArticleFields} item={article} />
+        <DeleteButton handleDelete={handleDeleteArticle} id={article.id} />
       </td>
-    </React.Fragment>
+    </tr>
   );
 };
 
-Article.propTypes = {
+ArticleRow.propTypes = {
   editArticleFields: PropTypes.func.isRequired,
   deleteArticle: PropTypes.func.isRequired,
   article: PropTypes.object.isRequired,
@@ -63,4 +50,4 @@ Article.propTypes = {
   pagination: PropTypes.object.isRequired,
 };
 
-export default Article;
+export default ArticleRow;
