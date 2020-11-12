@@ -1,5 +1,6 @@
-## Hapi + Sequelize 
+## Admin dashboard where you can browse some information about Authors, Articles and Websites.
 
+## Hapi + Sequelize + React + Redux
 
 RESTful actions for fetching, creating, updating and deleting 
 ```
